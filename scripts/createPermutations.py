@@ -1,20 +1,15 @@
-
-
 # bibliotecas
 import itertools
 import numpy as np
 
 def makePermutations():
-
 	# armazena todas as permutacoes possiveis de tamanho 5,6,...,10.
 	perms = []
-
 
 	# para cada tamanho possivel de permutacao, obtem todas as possibilidades
 	for size in range(5,11):
 		pi = range(1, size + 1)
-		perms.append(np.array(list(set(itertools.permutations(pi)))))
-
+		perms.append(np.array(list(itertools.permutations(pi))))
 
 	# Amostra 30 porcento do total de permutacoes possivel de cada tamanho de permutacao
 	# Se ficar muito pesado calcular o exato pelo site, podemos diminuir a quantidade
