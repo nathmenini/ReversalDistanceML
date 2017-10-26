@@ -13,7 +13,7 @@ def makePermutations():
 	# para cada tamanho possivel de permutacao, obtem todas as possibilidades
 	for size in range(5,11):
 		pi = range(1, size + 1)
-		perms.append(np.array(list(set(itertools.permutations(pi)))))
+		perms.append(np.array(list(itertools.permutations(pi))))
 
 
 	# Amostra 30 porcento do total de permutacoes possivel de cada tamanho de permutacao
