@@ -3,22 +3,23 @@ import networkx as nx
 
 # test permutatios
 #permutations = [[[3, 1, 4, 5, 2],[5, 2, 1, 4, 3]],[[3, 1, 4, 5, 2, 6],[6, 5, 2, 1, 4, 3]], [[8, 5, 1, 4, 3, 2, 7, 6]]]
+#permutations = [[[3, 1, 4, 5, 2],[5, 2, 1, 4, 3]],[[3, 1, 4, 5, 2, 6],[6, 5, 2, 1, 4, 3]], [[8, 5, 1, 4, 3, 2, 7, 6],[1, 2, 3, 4, 5, 6, 7, 8]]]
+
 
 def countCycles(permutations):
 
 	#cycles - for each permutation calculates total number of cycles and odd cycles 
 	#cycles = [[total, odd], [total, odd], ...]
-	c_list = []
 	cycles = []
-
+	G=nx.DiGraph()
 
 	for i in permutations:
-		G=nx.DiGraph()
-		total_cycles=0
-
-
 		for j in i:
+			G.clear()
+			c_list=[]
 			odd_cycles=0
+			total=0
+			
 			# create first and last pseudo nodes + black edges
 			G.add_edge(-1*j[0], 0, color='black')
 			G.add_edge(-1*(len(j)+1), j[len(j)-1], color='black')
@@ -34,7 +35,6 @@ def countCycles(permutations):
 				
 			c_list = list(nx.simple_cycles(G))
 			total = len(c_list);
-			#print(total)
 
 			# calculate number of odd cycles
 			for c in range(0, len(c_list)):
