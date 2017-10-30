@@ -25,8 +25,7 @@ def countCycles(permutations):
 			G.add_edge(-1*(len(j)+1), j[len(j)-1], color='black')
 		
 			# create black edges
-			for b in range(0,len(j)):
-				if(b!=len(j)-1):		
+			for b in range(0,len(j)-1):		
 					G.add_edge(-1*(j[b+1]), j[b], color='black')
 		
 			# create gray edges
@@ -41,13 +40,13 @@ def countCycles(permutations):
 				black_edges=0
 
 				# verify if the edge among two elements in cycle is black
-				for index in range(0, len(c_list[c])):
-					if(index!=len(c_list[c])-1):
-						if(G[c_list[c][index]][c_list[c][index+1]]['color'] == 'black'):
-							black_edges = black_edges + 1
-					else:
-						if(G[c_list[c][index]][c_list[c][0]]['color'] == 'black'):
-							black_edges = black_edges + 1
+				for index in range(0, len(c_list[c])-1):
+					#if(index!=len(c_list[c])-1):
+					if(G[c_list[c][index]][c_list[c][index+1]]['color'] == 'black'):
+						black_edges = black_edges + 1
+					
+				if(G[c_list[c][len(c_list[c])-1]][c_list[c][0]]['color'] == 'black'):
+					black_edges = black_edges + 1
 
 				# if number of black edges is odd, this is a odd cycle
 				if(black_edges%2 != 0):
