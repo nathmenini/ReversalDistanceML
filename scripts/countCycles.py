@@ -26,7 +26,7 @@ def countCycles(permutations):
 		
 			# create black edges
 			for b in range(0,len(j)-1):		
-					G.add_edge(-1*(j[b+1]), j[b], color='black')
+				G.add_edge(-1*(j[b+1]), j[b], color='black')
 		
 			# create gray edges
 			for g in range(1,len(j)+2):
