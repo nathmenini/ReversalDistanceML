@@ -1,5 +1,6 @@
-
 import networkx as nx
+import numpy as np
+import progressbar
 
 # test permutatios
 #permutations = [[[3, 1, 4, 5, 2],[5, 2, 1, 4, 3]],[[3, 1, 4, 5, 2, 6],[6, 5, 2, 1, 4, 3]], [[8, 5, 1, 4, 3, 2, 7, 6]]]
@@ -12,8 +13,9 @@ def countCycles(permutations):
 	#cycles = [[total, odd], [total, odd], ...]
 	cycles = []
 	G=nx.DiGraph()
+	bar = progressbar.ProgressBar()
 
-	for i in permutations:
+	for i in bar(permutations):
 		for j in i:
 			G.clear()
 			c_list=[]
@@ -54,7 +56,10 @@ def countCycles(permutations):
 
 			cycles.append([total, odd_cycles])
 
-	return cycles
+	
+	list_to_array = np.asarray(cycles)
+
+	return list_to_array
 			
 
 	
