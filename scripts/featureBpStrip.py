@@ -46,14 +46,25 @@ def featureBpStrip(p):
 	for j in range(int(len(p)-np.sum(size_strip))):
 		size_strip.append(1)
 		sDecresc = sDecresc + 1
-	
-	return bp, np.min(size_strip), np.max(size_strip), sCresc, sDecresc
+
+	# encontra o tamanho da menor strip que nao seja a strip unitaria
+	sortedStrip = sorted(set(size_strip))
+	minStrip = sortedStrip[0]
+
+	# se a menor for a unitaria, substitui pela segunda menor
+	if(minStrip == 1):
+		minStrip = sortedStrip[1]
+
+	# quantidade de strips unitarias
+	unitStrip = (np.asarray(size_strip) == 1).sum()
+
+	return bp, unitStrip, minStrip, np.max(size_strip), sCresc, sDecresc
 
 
 
 # exemplos para teste
 
-#print featureBpStrip([1, 2, 3, 5, 6, 4])
+print featureBpStrip([1, 2, 3, 5, 6, 4])
 # 0, 1, 2, 3, 5, 6, 4, 7
 # bp = 3
 # Tamanhos = 4, 2
