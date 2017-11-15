@@ -68,12 +68,11 @@ def countCycles(permutations):
 						highest_id = int(G[c_list[c][len(c_list[c])-1]][c_list[c][0]]['id'])
 						start_node = c_list[c][len(c_list[c])-1]
 
-				#print(start_node)
+				# calculate number of oriented cycles
 				edg_list = list(nx.find_cycle(G, start_node, orientation='original'))
 				edg_ids = nx.get_edge_attributes(G, 'id')
 				edg_colors = nx.get_edge_attributes(G, 'color')
 				previous=edg_ids[edg_list[0]]
-				#print(previous)
 
 				for e in edg_list:
 					if(edg_colors[e] == 'black' and int(edg_ids[e]) < previous):

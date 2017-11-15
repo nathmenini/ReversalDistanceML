@@ -23,9 +23,9 @@ def getInputs(p):
 	labels = np.delete(labels, 0, 0)
 
 
-	cycles_total_odd = countCycles(p)
+	#cycles_total_odd = countCycles(p)
 
-	features = np.hstack((features, cycles_total_odd, labels)) # junta as colunas
+	features = np.hstack((features, labels)) # junta as colunas
 
 	return features
 
