@@ -17,7 +17,7 @@ for i in bar(range(len(fileNames))):
 
 features = getInputs(perms)
 
-np.savetxt('/home/serza/ReversalDistanceML/scripts/features.txt', features, fmt='%d')
+np.savetxt('/home/serza/features.txt', features, fmt='%d')
 
 #output.write(str(features))
 #output.close()
