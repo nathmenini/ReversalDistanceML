@@ -2,6 +2,8 @@ import networkx as nx
 import numpy as np
 import progressbar
 
+# algoritmo ingenuo
+
 def SimpleReversalSort(pi):
 
 	count=0
