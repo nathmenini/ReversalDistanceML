@@ -1,5 +1,7 @@
 import random
 
+# rodar o programa no python 2.7
+
 def makePermutation(n):
     """ generates a random permuation of the numbers 1..n-1 sandwiched between 0 and n """
     seq = range(1,n)
@@ -56,11 +58,17 @@ def pickReversal(seq, strips):
     #print "%d:" % reversal[0],
     return reversal[1]
 
-def doReversal(seq,(i,j)):
+def doReversal(seq,(i, j)):
     return seq[:i] + [element for element in reversed(seq[i:j])] + seq[j:]
 
 def improvedBreakpointReversalSort(seq):
     count=0
+    
+    # introduz os elementos 0 e n+1 na permutacao
+    seq = seq.astype('int')
+    seq=list(seq)
+    seq = [0,] + seq + [len(seq)+1]
+
     while hasBreakpoints(seq):
         increasing, decreasing = getStrips(seq)
         if len(decreasing) > 0:
@@ -72,4 +80,4 @@ def improvedBreakpointReversalSort(seq):
         seq = doReversal(seq,reversal)
         count=count+1
     #print seq, "Sorted"
-    return count
+    return count,
