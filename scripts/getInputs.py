@@ -2,6 +2,7 @@ import numpy as np
 import progressbar
 from createPermutations import makePermutations
 from featureBpStrip import featureBpStrip
+from countCycles import countCycles
 
 
 def getInputs(p):

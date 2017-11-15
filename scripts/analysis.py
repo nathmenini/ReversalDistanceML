@@ -3,7 +3,7 @@ import progressbar
 from getInputs import getInputs
 
 # Executar o algoritmo na pasta prepared-data descompactada
-fileNames = ['perm_5.txt']#, 'perm_6.txt', 'perm_7.txt', 'perm_8.txt', 'perm_9.txt', 'perm_10.txt']
+fileNames = ['perm_5.txt', 'perm_6.txt', 'perm_7.txt', 'perm_8.txt', 'perm_9.txt', 'perm_10.txt']
 #output = open('/home/serza/ReversalDistanceML/scripts/features.txt', 'w')
 
 perms = []
@@ -17,7 +17,7 @@ for i in bar(range(len(fileNames))):
 
 features = getInputs(perms)
 
-np.savetxt('features.txt', features, fmt='%d')
+np.savetxt('/home/serza/ReversalDistanceML/scripts/features.txt', features, fmt='%d')
 
 #output.write(str(features))
 #output.close()
