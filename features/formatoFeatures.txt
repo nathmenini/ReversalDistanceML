@@ -1,0 +1,13 @@
+[qtde breakpoints, 
+	qtde strips unitarias, 
+	tamanho menor strip,
+	tamanho da maior strip,
+	qtde strips crescentes,
+	qtde strips decrescentes,
+	total de ciclos,
+	qtde ciclos impares,
+	qtde ciclos unitarios,
+	tamanho maior ciclo,
+	tamanho menor ciclo,
+	qtde ciclos orientados,
+	tamanho da permutacao]
