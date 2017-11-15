@@ -77,7 +77,7 @@ def countCycles(permutations):
 				for e in edg_list:
 					if(edg_colors[e] == 'black' and int(edg_ids[e]) < previous):
 						previous = edg_ids[e]
-					elif(edg_colors[e] == 'black' and int(edg_ids[e]) > previous): #Se unitario for orientado então adicionar or len(edg_list)==2
+					elif(edg_colors[e] == 'black' and int(edg_ids[e]) > previous): #Se unitario for orientado entao adicionar or len(edg_list)==2
 						oriented_cycles = oriented_cycles +1;
 						break
 
