@@ -2,13 +2,12 @@ import numpy as np
 import progressbar
 from createPermutations import makePermutations
 from featureBpStrip import featureBpStrip
-from countCycles import countCycles
 
 
 def getInputs(p):
 	# vetor para armazenar as caracteristicas
 	features = np.zeros((1,5))
-	
+
 	# vetor para identificar o tamanho de cada permutacao
 	labels = np.zeros((1,1))
 	lengths = range(5,11)
@@ -23,9 +22,6 @@ def getInputs(p):
 	labels = np.delete(labels, 0, 0)
 
 	#cycles_total_odd = countCycles(p)
-
-	cycles_total_odd = countCycles(p)
-
 
 	features = np.hstack((features, labels)) # junta as colunas
 
