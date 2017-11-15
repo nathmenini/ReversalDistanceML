@@ -6,13 +6,8 @@ from featureBpStrip import featureBpStrip
 
 def getInputs(p):
 	# vetor para armazenar as caracteristicas
-<<<<<<< HEAD
-	features = np.zeros((1,5))
-
-=======
 	features = np.zeros((1,6))
 	
->>>>>>> 0d7ffcd461b6c796258f0b53e244c3707f9c9419
 	# vetor para identificar o tamanho de cada permutacao
 	labels = np.zeros((1,1))
 	lengths = range(5,11)
@@ -28,17 +23,8 @@ def getInputs(p):
 
 	cycles_total_odd = countCycles(p)
 
-<<<<<<< HEAD
+
 	features = np.hstack((features, cycles_total_odd, labels)) # junta as colunas
-=======
-<<<<<<< HEAD
-=======
-	#cycles_total_odd = countCycles(p)
-
-
->>>>>>> 0d7ffcd461b6c796258f0b53e244c3707f9c9419
-	features = np.hstack((features, labels)) # junta as colunas
->>>>>>> 1c1237572858652f81e05df55a0036f78623dba9
 
 	return features
 

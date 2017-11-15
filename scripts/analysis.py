@@ -17,8 +17,7 @@ for i in bar(range(len(fileNames))):
 
 features = getInputs(perms)
 
-print features
-#np.savetxt('features.txt', features, fmt='%d')
+np.savetxt('features.txt', features, fmt='%d')
 
 #output.write(str(features))
 #output.close()
