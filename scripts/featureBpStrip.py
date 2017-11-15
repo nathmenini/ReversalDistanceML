@@ -58,9 +58,7 @@ def featureBpStrip(p):
 	# quantidade de strips unitarias
 	unitStrip = (np.asarray(size_strip) == 1).sum()
 
-	return bp, unitStrip,  np.max(size_strip), sCresc, sDecresc
-
-#minStrip,
+	return bp, unitStrip, minStrip, np.max(size_strip), sCresc, sDecresc
 
 # exemplos para teste
 
