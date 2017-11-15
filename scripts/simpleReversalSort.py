@@ -7,7 +7,10 @@ import progressbar
 def SimpleReversalSort(pi):
 
 	count=0
-	pi = pi.tolist()
+	pi = pi.astype('int')
+	pi=list(pi)
+
+	pi = [0,] + pi + [len(pi)+1]
 
 	for i in range(len(pi)):
 		j=pi.index(min(pi[i:]))
