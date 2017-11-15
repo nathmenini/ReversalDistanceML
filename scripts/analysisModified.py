@@ -17,7 +17,7 @@ for i in bar(range(len(fileNames))):
 
 features = getInputsModified(perms)
 
-np.savetxt('/home/serza/simpleReversalSort.txt', features, fmt='%d')
+np.savetxt('/home/serza/greedyReversalSort.txt', features, fmt='%d')
 
 #output.write(str(features))
 #output.close()
