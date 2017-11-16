@@ -62,6 +62,7 @@ def featureBpStrip(p):
 
 # exemplos para teste
 
+#print featureBpStrip([2,5,1,3,4])
 #print featureBpStrip([1, 2, 3, 5, 6, 4])
 # 0, 1, 2, 3, 5, 6, 4, 7
 # bp = 3
