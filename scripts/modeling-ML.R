@@ -1,5 +1,6 @@
 library(magrittr)
 library(data.table)
+library(ggplot2)
 
 set.seed(1)
 # nao esquecer de mudar o path e fazer unzip nos arquivos necessarios
@@ -8,7 +9,7 @@ set.seed(1)
 # Leitura dos daddos
 # -------------------------------------
 # define caminho para os dados
-data_path <- "/Users/almeida/Downloads/"
+data_path <- "/Users/almeida/Downloads/data/"
 
 # leitura das features
 data <- read.table(paste0(data_path, "features.txt"))
@@ -78,15 +79,69 @@ dVal$ pred <- pred
 boxplot(pred~dVal$dist, xlab = "true distance", ylab = "predicted distance")
 table(dVal$dist, pred %>% round(0))
 
+# nro breaks vs media da distancia
 meanDistBp <- aggregate(dVal$pred, list(dVal$qtdBp), mean)
-plot(meanDistBp$Group.1, meanDistBp$x, type = "l", ylim = c(min(meanDistBp$Group.1), max(meanDistBp$Group.1)), xlab = "breakpoint", ylab = "Media da distancia", lwd = 1.5)
-lines(meanDistBp$Group.1, meanDistBp$Group.1, lty = 2, lwd = 1.5, col = "gray")
-lines(meanDistBp$Group.1, meanDistBp$Group.1/2, lty = 2, lwd = 1.5, col = "gray")
-
 meanGreedy <- aggregate(dVal$dGreedy, list(dVal$qtdBp), mean)
-lines(meanGreedy$Group.1, meanGreedy$x, col = "blue", lwd = 1.5)
 meanSimple <- aggregate(dVal$dSimple, list(dVal$qtdBp), mean)
-lines(meanSimple$Group.1, meanSimple$x, col = "orange", lwd = 1.5)
-
 meanReal <- aggregate(dVal$dist, list(dVal$qtdBp), mean)
-lines(meanReal$Group.1, meanReal$x, col = rgb(1,0,0,0.7), lwd = 1.5)
+
+plot1 <- data.frame(Abordagem = c(rep("RL", meanDistBp$Group.1 %>% length()),
+							  rep("Greedy Sort", meanDistBp$Group.1 %>% length()),
+							  rep("Simple Sort", meanDistBp$Group.1 %>% length()),
+							  rep("Real", meanDistBp$Group.1 %>% length()),
+							  rep("Lim. Inf.", meanDistBp$Group.1 %>% length()),
+							  rep("Lim. Sup.", meanDistBp$Group.1 %>% length())),
+					yValue = c(meanDistBp$x,
+							   meanGreedy$x,
+							   meanSimple$x,
+							   meanReal$x,
+							   meanDistBp$Group.1/2,
+							   meanDistBp$Group.1),
+					xValue = rep(meanDistBp$Group.1, 6),
+					line = c(rep("1", meanDistBp$Group.1 %>% length()),
+								  rep("1", meanDistBp$Group.1 %>% length()),
+								  rep("1", meanDistBp$Group.1 %>% length()),
+								  rep("1", meanDistBp$Group.1 %>% length()),
+								  rep("2", meanDistBp$Group.1 %>% length()),
+								  rep("2", meanDistBp$Group.1 %>% length())),
+					flag = rep("# Breakpoint", (meanDistBp$Group.1 %>% length())*6)
+)
+
+# Tamanho de p vs media da distancia
+meanDistTam <- aggregate(dVal$pred, list(dVal$tamanhoPerm), mean)
+meanGreedy <- aggregate(dVal$dGreedy, list(dVal$tamanhoPerm), mean)
+meanSimple <- aggregate(dVal$dSimple, list(dVal$tamanhoPerm), mean)
+meanReal <- aggregate(dVal$dist, list(dVal$tamanhoPerm), mean)
+lim <- aggregate(dVal$qtdBp, list(dVal$tamanhoPerm), mean)
+
+plot2 <- data.frame(Abordagem = c(rep("RL", meanDistTam$Group.1 %>% length()),
+								  rep("Greedy Sort", meanDistTam$Group.1 %>% length()),
+								  rep("Simple Sort", meanDistTam$Group.1 %>% length()),
+								  rep("Real", meanDistTam$Group.1 %>% length()),
+								  rep("Lim. Inf.", meanDistTam$Group.1 %>% length()),
+								  rep("Lim. Sup.", meanDistTam$Group.1 %>% length())),
+					yValue = c(meanDistTam$x,
+							   meanGreedy$x,
+							   meanSimple$x,
+							   meanReal$x,
+							   lim$x/2,
+							   lim$x),
+					xValue = rep(meanDistTam$Group.1, 6),
+					line = c(rep("1", meanDistTam$Group.1 %>% length()),
+							 rep("1", meanDistTam$Group.1 %>% length()),
+							 rep("1", meanDistTam$Group.1 %>% length()),
+							 rep("1", meanDistTam$Group.1 %>% length()),
+							 rep("2", meanDistTam$Group.1 %>% length()),
+							 rep("2", meanDistTam$Group.1 %>% length())),
+					flag = rep("Tamanho da permutação", (meanDistTam$Group.1 %>% length())*6)
+)
+
+plot <- rbind(plot1, plot2)
+
+ggplot(plot, aes(xValue, yValue, colour = Abordagem)) +
+	geom_line(aes(linetype=line), lwd = .7) +
+	facet_grid(.~flag, scales = "free") +
+	guides(linetype=FALSE) +
+	theme_light() +
+	labs(x="", y="Média da distância") + 
+	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9e00","#54ccfb","#24633e"))
