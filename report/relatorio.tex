@@ -22,7 +22,7 @@
 
 \title{Estimação da Distância de Reversão de Genomas Baseada em Técnicas de \textit{Machine Learning}}
 
-\titlerunning{Estimação da Distância de Reversão de Genomas Baseada em Técnicas de \textit{Machine Learning}}
+\titlerunning{Estimação da Distância de Reversão de Genomas}
 
 \author{Nathalia Menini, Sergio Arnosti e Jorge da Silva}
 
@@ -44,7 +44,14 @@ Comparar dois genomas é uma tarefa fundamental para se estudar as relações e a e
 
 O \textit{rearranjo de genomas} é uma mutação que ocorre nos genomas mitocondrias~\cite{Russel}, de modo que a ordem dos genes no genoma está em constante rearranjo. Desse modo, através da estimação da distância de rearranjo entre dois genes, a relação entre eles pode ser estimada~\cite{Pevzner}.
 
-Quando um fragmento do filamento de DNA é revertido na replica final, temos o que chamamos de \textit{reversão}, que é uma das mutações mais comumente vistas em genomas. Por outro lado, se dois fragmentos de DNA trocam de posições durante o processo de replicação (mas não sofrem reversão), temos a mutação chamada de \textit{transposição}~\cite{daSilva}. Neste trabalho, o nosso foco será apenas na mutação conhecida por reversão.
+Quando um fragmento do filamento de DNA é revertido na replica final, temos o que chamamos de \textit{reversão}, que é uma das mutações mais comumente vistas em genomas (uma ilustração dessa mutação pode ser vista na Figura~\ref{fig:1}, em que ilustra a transformação do \textit{Tabacco} em \textit{Lobelia fervens}). Por outro lado, se dois fragmentos de DNA trocam de posições durante o processo de replicação (mas não sofrem reversão), temos a mutação chamada de \textit{transposição}~\cite{daSilva}. Neste trabalho, o nosso foco será apenas na mutação conhecida por reversão.
+
+\begin{figure}
+	\centering
+	\includegraphics[height=6.2cm]{tabacco-lobelia.pdf}
+	\caption{Transformação do \textit{Tabacco} em \textit{Lobelia fervens} através de operações de reversão. Imagem adaptada de Bafna e Pevzner~\cite{Bafna}.}
+	\label{fig:1}
+\end{figure}
 
 A área da Filogenia, que estuda a história evolutiva das relações entre espécies, depende fortemente do Principio da Parcimônia. Basicamente, dado um conjunto de possíveis explicações para um fato, a explicação mais simples é a mais provável de estar certa. Como as mutações são relativamente raras de acontecer, quando os pesquisadores tentam construir uma árvore filogenética, eles tentam fazer com que as espécies tenham o menor número de antecessores possíveis, ou seja, é muito mais provável que duas espécies que possuem uma determinada característica tenham evoluído do mesmo ancestral comum que desenvolveu essa característica, em vez de acreditar que a característica evoluiu duas vezes, de espécies diferentes~\cite{daSilva}.
 
@@ -60,6 +67,17 @@ Entretanto, a maioria dos algoritmos na literatura buscam, além de encontrar a d
 \label{sec:2}
 
 Nessa seção explicaremos a operação de reversão no contexto de permutações sem orientação e, também, alguns conceitos utilizados para o protocolo de extração das \textit{features} utilizadas nos algoritmos de ML.
+
+\subsection{Reversões}
+
+\subsection{\textit{Breakpoints}}
+
+\subsection{\textit{Strips}}
+
+\subsection{Maior e Menor \textit{Strip} Crescente}
+
+\subsection{Ciclos}
+
 
 \section{Metodologia}
 \label{sec:3}
