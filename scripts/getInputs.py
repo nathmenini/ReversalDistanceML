@@ -11,8 +11,9 @@ def getInputs(p):
 	
 	# vetor para identificar o tamanho de cada permutacao
 	labels = np.zeros((1,1))
-	lengths = range(5,11)
-	
+	#lengths = range(5,11)
+	lengths = [11, 20, 30, 40, 50, 60, 70, 80, 90, 100]	
+
 	bar = progressbar.ProgressBar()
 	for i in bar(range(len(p))):
 		pi = p[i]

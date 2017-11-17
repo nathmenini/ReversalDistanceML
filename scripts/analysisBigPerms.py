@@ -1,5 +1,6 @@
 import numpy as np
 import progressbar
+from getInputs import getInputs
 from getInputsModified import getInputsModified
 
 # executar na pasta em que as perms grandes entao
@@ -13,8 +14,8 @@ for i in bar(range(len(fileNames))):
 	p = np.loadtxt(fileNames[i], delimiter = " ")
 	perms.append(p)
 
-features2 = getInputs(perms)
+#features2 = getInputs(perms)
 features3 = getInputsModified(perms)
 
-np.savetxt('/features2', features2, fmt='%d')
-np.savetxt('/greedy', features2, fmt='%d')
+#np.savetxt('/home/serza/features2.txt', features2, fmt='%d')
+np.savetxt('/home/serza/simpleSortBigPerms.txt', features3, fmt='%d')
