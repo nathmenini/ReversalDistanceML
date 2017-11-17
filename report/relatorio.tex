@@ -1,4 +1,4 @@
-\documentclass[a4paper,oribibl]{llncs}
+\documentclass[runningheads,a4paper]{llncs}
 
 \setcounter{tocdepth}{3}
 \usepackage[portuges]{babel}
@@ -8,8 +8,6 @@
 \usepackage{color}
 \usepackage{soul}
 \usepackage{hyperref}
-\usepackage[backend=biber,doi=false,isbn=false,url=false,citestyle=alphabetic,firstinits=true,style=alphabetic,maxbibnames=99,maxcitenames=1]{biblatex}
-\addbibresource{library.bib} % Path com bib
 
 \usepackage{url}
 \urldef{\mails}\path|{nathmenini, serza.arnosti, jorge.inatel}@gmail.com|
@@ -42,6 +40,19 @@ Av. Albert Einstein, 1251 - Cidade Universitária, Campinas - SP\\
 \section{Introdução}
 \label{sec:1}
 
+Comparar dois genomas é uma tarefa fundamental para se estudar as relações e a evolução entre os genes~\cite{Lou,daSilva}. Nesse caminho, a Biologia Computacional tem se apresentado como uma ótima aliada para os pesquisadores da área, tornando possível descobrir relações entre os genes que, para a percepção do ser humano, poderia ser muito difícil.~\cite{daSilva}
+
+O Rearranjo de Genomas é uma mutação que ocorre nos genomas mitocondrias~\cite{Russel}. A ordem dos genes no genoma está em constante rearranjo. Desse modo, através da estimação da distância de rearranjo entre dois genes, a relação entre eles pode ser estimada~\cite{Pevzner}.
+
+Quando um fragmento do filamento de DNA é revertido na replica final, temos o que chamamos de \textit{reversão}, que é uma das mutações mais comumente vista em genomas. Por outro lado, se dois fragmentos de DNA trocam de posições durante o processo de replicação (mas não sofrem reversão), temos a mutação chamada de \textit{transposição}~\cite{daSilva}. Neste trabalho, o nosso foco será apenas na mutação conhecida por reversão.
+
+A área da Filogenia, que estuda a história evolutiva das relações entre espécies, depende fortemente do Principio da Parsimônia. Basicamente, dado um conjunto de possíveis explicações para um fato, a explicação mais simples é a mais provável de estar certa. Como as mutações são relativamente raras de acontecer, quando os pesquisadores tentam construir uma árvore filogenética, eles tentam fazer com que as espécies tenham o menor número de antecessores possíveis, ou seja, é muito mais provável que duas espécies que possuem uma determinada característica tenham evoluído do mesmo ancestral comum que desenvolveu essa característica, em vez de acreditar que a característica evoluiu duas vezes, de espécies diferentes~\cite{daSilva}.
+
+Considere a permutação identidade $\iota = (1,2,...,n)$ de tamanho n como o genoma original. Dada qualquer permutação $\pi$ de tamanho $n$, o problema consiste em construir um modelo capaz de calcular a distância de reversão de $\iota$ e $\pi$, em que são permitidos apenas operações de reversão.
+
+Uma outra possível representação de genomas é utilizando a \textit{orientação} dos genes. Nesse caso, nós representamos o genoma com os símbolos $+$ ou $-$ para cada gene, por exemplo, $(+1,-2,...,-n)$. Na literatura, essa abordagem é conhecida como \textit{permutações com orientação}. Se nós não temos informações sobre a orientação dos genes, os sinais são omitidos e a abordagem passa a ser chamada de \textit{permutação sem orientação}. Neste trabalho, trabalharemos apenas com as permutações sem orientação.
+
+Entretanto, determinar o número mínimo de reversões necessárias para um genoma se transformar no outro, no contexto de permutação sem orientação, não é um problema fácil de se resolver, uma vez que foi provado ser um problema NP-difícil~\cite{Caprara}. Muitas abordagens já foram proposta para atacar esse problema como, por exemplo, Kececioglu and Sankoff~\cite{Kececioglu}, propuseram o algoritmo de 2-aproximação que remove \textit{breakpoints} por reversão (o conceito de \textit{breakpoint} será descrito posteriormente) e Bafna and Pevzner~\cite{Bafna} criaram o algoritmo de 1.75-aproximação utilizando grafos de reversão. O atual estado da arte foi desenvolvido por Barman et al.~\cite{Berman}, que construiu um algoritmo de 1.375-aproximação.
 
 \section{Revisão Bibliográfica}
 \label{sec:2}
@@ -59,6 +70,31 @@ Av. Albert Einstein, 1251 - Cidade Universitária, Campinas - SP\\
 \label{sec:5}
 
 
-\printbibliography
+\begin{thebibliography}{4}
+	
+	\bibitem{Russel} Russell, P. J.: iGenetics. Benjamim Cummings (2002)
+	
+	\bibitem{daSilva} da Silva, M., Oliveira, A., Dias, Z.: Machine Learning Applied to Sorting Permutations by Reversal and Transpositions. Technical report, Unicamp (2017)
+	
+	\bibitem{lncschap} May, P., Ehrlich, H.C., Steinke, T.: ZIB Structure Prediction Pipeline:
+	Composing a Complex Biological Workflow through Web Services. In: Nagel,
+	W.E., Walter, W.V., Lehner, W. (eds.) Euro-Par 2006. LNCS, vol. 4128,
+	pp. 1148--1158. Springer, Heidelberg (2006)
+	
+	\bibitem{Pevzner} Pevzner, P.: Computational Molecular Biology An Algorithmic Approach. MIT Press (2001)
+	
+	\bibitem{Lou} Lou, X.W., Zhu, D.M.: Sorting Unsigned Permutations by Weighted Reversals, Transpositions, and Transversals. Journal of Computer Science and Technology (2009)
+	
+	\bibitem{Caprara} Caprara, A.: Sorting by Reversals is Difficult. Proceedings of the First International Conference on Comptational Molecular Biology (1997)
+
+	\bibitem{Kececioglu} Kececioglu, J., Sankoff, D.: Exact and approximation algorithms for sorting by reversals, with application to genome rearreangement. Algorithmica (1995)
+	
+	\bibitem{Bafna} Bafna, V., Pevzner, P.: Genome rearragements and sorting by reversals. SIAM Journal on Computing (1996)
+	
+	\bibitem{Berman} Berman, P., Hannenhalli, S., Karpinski, M.: 1.375-approximation algorithm for sorting by reversals. In 10th Annual European Symposium on Algorithms (2002)
+
+	
+\end{thebibliography}
+
 
 \end{document}

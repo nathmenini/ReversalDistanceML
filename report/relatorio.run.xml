@@ -79,8 +79,5 @@
     <requires type="dynamic">
       <file>relatorio.bcf</file>
     </requires>
-    <requires type="editable">
-      <file>library.bib</file>
-    </requires>
   </external>
 </requests>
