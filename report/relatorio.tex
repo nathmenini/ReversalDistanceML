@@ -57,7 +57,7 @@ A área da Filogenia, que estuda a história evolutiva das relações entre espécies
 
 Considere a permutação identidade $\iota = (1,2,...,n)$ de tamanho $n$ como o genoma original. Dada qualquer permutação $\pi$ de tamanho $n$, o problema consiste em construir um modelo capaz de calcular a distância de reversão de $\iota$ e $\pi$, em que são permitidos apenas operações de reversão.
 
-Uma outra possível representação de genomas é utilizando a \textit{orientação} dos genes. Nesse caso, representamos o genoma com os símbolos $+$ ou $-$ para cada gene como, por exemplo, na permutação $(+1,-2,...,-n)$. Na literatura, essa abordagem é conhecida como \textit{permutações com orientação de genes conhecida}. Por outro lado, se não temos informações sobre a orientação dos genes, os sinais são omitidos e a abordagem passa a ser chamada de \textit{permutação sem orientação de genes conhecida}. Neste trabalho, focaremos apenas nas permutações sem orientação.
+Uma outra possível representação de genomas é utilizando a \textit{orientação} dos genes. Nesse caso, representamos o genoma com os símbolos $+$ ou $-$ para cada gene como, por exemplo, na permutação $(+1,-2,\cdots,-n)$. Na literatura, essa abordagem é conhecida como \textit{permutações com orientação de genes conhecida}. Por outro lado, se não temos informações sobre a orientação dos genes, os sinais são omitidos e a abordagem passa a ser chamada de \textit{permutação sem orientação de genes conhecida}. Neste trabalho, focaremos apenas nas permutações sem orientação.
 
 Entretanto, determinar o número mínimo de reversões necessárias para um genoma se transformar no outro, no contexto de permutação sem orientação, não é um problema fácil de se resolver, uma vez que foi provado ser um problema NP-difícil~\cite{Caprara}. Muitas abordagens já foram proposta para atacar esse problema como, por exemplo, Kececioglu e Sankoff~\cite{Kececioglu}, em que propuseram o algoritmo de 2-aproximação que remove \textit{breakpoints} por reversão (o conceito de \textit{breakpoint} será descrito posteriormente) e Bafna e Pevzner~\cite{Bafna} que criaram o algoritmo de 1.75-aproximação utilizando grafos de reversão. O atual estado da arte foi desenvolvido por Barman et al.~\cite{Berman}, que construiu um algoritmo de 1.375-aproximação. Abordagens utilizando Algoritmos Genéticos e técnicas de \textit{Machine Learning} (ML) também já foram propostas em Auyeung e Abraham~\cite{Auyeung} e da Silva et al~\cite{daSilva}, respectivamente.
 
@@ -68,7 +68,26 @@ Entretanto, a maioria dos algoritmos na literatura buscam, além de encontrar a d
 
 Nessa seção explicaremos a operação de reversão no contexto de permutações sem orientação e, também, alguns conceitos utilizados para o protocolo de extração das \textit{features} utilizadas nos algoritmos de ML.
 
+Os genomas podem ser representados por permutações ($n$-tuplas, em que $n$ é a quantidade de genes), em que cada gene é representado por um número e que todos os genes são diferentes um dos outros. Ou seja, uma permutação $\pi$ de tamanho $n$ é representada por $\pi=(\pi_1\ \pi_2\ \cdots \ \pi_n)$, com $\pi_i \in \{1,2,\cdots n\}$ e $\pi_i \neq \pi_j \iff i \neq j$. A \textit{permutação identidade}, como mencionada anteriormente, é definida como $\iota = (1\ 2\ \cdots n)$. A \textit{composição} entre duas permutações $\pi$ e $\sigma$ é dada por $\pi\sigma=(\pi_{\sigma_1}\ \pi_{\sigma_2} \cdots \pi_{\sigma_3})$. Definimos também o \textit{inverso} de uma permutação $\pi$ como $\pi^{-1}$, em que $\pi^{-1}\pi=\iota$.
+
+A \textit{permutação extendida} de uma permutação $\pi=(\pi_1\ \pi_2\ \cdots \ \pi_n)$, denotada por $\pi_e$, é definida como $\pi_e=(0\ \pi_1\ \pi_2\ \cdots \ \pi_n \ n+1)$. A definição de permutação extendida é necessária para a descrição de operações que serão abordadas no decorrer do trabalho.
+
+Dadas duas permutações $\pi$ e $\sigma$ e um conjunto de operações $\Sigma=\{\rho_1, \rho_2, \cdots, \rho_k \}$, o problema de transformar $\pi$ em $\sigma$ consiste em obter no menor número possível de operações de $\Sigma$ aplicada em $\pi$, tal que $pi$ seja transformada em $\sigma$. O número de operações necessárias é chamado de distância entre $\pi$ e $\sigma$ e é representado por $d(\pi,\sigma)$. Para fins de notação, utilizaremos que $d(\pi,\iota)=d(\pi)$.
+
+O problema de encontrar a distância entre as permutações $\pi$ e $\sigma$ é equivalente ao problema de encontrar a distância entre alguma permutação $\pi'$ e $\iota$, em que $\pi=\sigma^{-1}\pi$. Ou seja, se queremos encontrar a distância entre $\pi$ e $\sigma$, equivale ao problema de ordenação de $\sigma^{-1}\pi$. Por exemplo, na Figura~\ref{fig:2}, se considerarmos $\pi=(5\ 3\ 1\ 6\ 7\ 4\ 2)$ e $\sigma=(6\ 3\ 2\ 7\ 5\ 1\ 4)$, temos que $\sigma^{-1}=(6\ 3\ 2\ 7\ 5\ 1\ 4)$, o que faz com que $\pi=\sigma^{-1}\pi=(5\ 2\ 6\ 1\ 4\ 7\ 3)$. Então, a distância entre $\pi$ e $\sigma$ equivale a distância de ordenação de $\pi'$.
+
+\begin{figure}
+	\centering
+	\includegraphics[height=6.2cm]{perms.pdf}
+	\caption{Equivalência na distância entre $\pi$ e $\sigma$ com a distância entre $\pi'$ e $\iota$.}
+	\label{fig:2}
+\end{figure}
+
 \subsection{Reversões}
+
+Uma operação de reversão $\rho_r(i,j)$, com $1 \leq i < j \leq n$ reverte um fragmento da permutação, ou seja, $\rho_r(i,j)$ aplicado em $\pi=(\pi_1\ \cdots \ \pi_{i-1}\ \underline{\pi_i \cdots \pi_j}\ \pi_{j+1} \ \cdots \ \pi_n)$ gera $\pi \rho_r(i,j) = (\pi_1\ \cdots \ \pi_{i-1}\ \underline{\pi_j \cdots \pi_i}\ \pi_{j+1} \ \cdots \ \pi_n)$.
+
+Considere, por exemplo, $\pi=(1\ 4\ 3\ 2\ 6\ 7\ 5)$ e a operação de reversão $\rho_r(2,4)$. O resultado após aplicar essa operação é $\pi \rho_r(2,4)= (1\ \underline{2\ 3\ 4}\ 6\ 7\ 5)$.
 
 \subsection{\textit{Breakpoints}}
 
