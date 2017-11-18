@@ -58,38 +58,4 @@ def featureBpStrip(p):
 	# quantidade de strips unitarias
 	unitStrip = (np.asarray(size_strip) == 1).sum()
 
-	return bp, unitStrip, minStrip, np.max(size_strip), sCresc + 2, sDecresc - 2
- 
-# exemplos para teste
-
-#print featureBpStrip([2,5,1,3,4])
-#print featureBpStrip([1, 2, 3, 5, 6, 4])
-# 0, 1, 2, 3, 5, 6, 4, 7
-# bp = 3
-# Tamanhos = 4, 2
-# strips = 4
-# Crescentes = 2
-# Decrescentes = 2
-
-#print featureBpStrip([2, 3, 1, 5, 6, 4])
-# 0, 2, 3, 1, 5, 6, 4, 7
-# bp = 5
-# Tamanhos = 2, 2, 1, 1, 1, 1
-# strips = 6
-# Crescentes = 2
-# Decrescentes = 4
-
-#print featureBpStrip([1, 2, 3, 4, 5, 7, 6, 8, 9, 11 ,13, 10, 12])
-# 0, 1, 2, 3, 4, 5, 7, 6, 8, 9, 11 ,13, 10, 12, 13
-# bp = 7
-# Tamanhos = 6, 2, 2, 1, 1, 1, 1, 1
-# strips = 8
-# Crescentes = 2
-# Decrescentes = 6
-
-
-
-
-
-
-
+	return bp, unitStrip, minStrip, np.max(size_strip), sCresc, sDecresc
