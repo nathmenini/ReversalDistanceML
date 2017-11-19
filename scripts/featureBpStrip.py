@@ -72,6 +72,7 @@ def featureBpStrip(p):
 	unitStrip = (np.asarray(size_strip) == 1).sum()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	# soma 2 na sCresc por causa das strip unitarias da ponta da permutacao extendida
 	return bp, unitStrip, minStrip, np.max(size_strip), sCresc + 2, sDecresc
 
@@ -90,6 +91,9 @@ def featureBpStrip(p):
 #print featureBpStrip([2,3,1,5,6,4])
 #print featureBpStrip([1,2,3,4,5,7,6,8,9,11,13,10,12])
 
+=======
+	return bp, unitStrip, minStrip, np.max(size_strip), sCresc, sDecresc
+>>>>>>> 431b648eab3c42e3bb0519aaab46e46e455f40c0
 =======
 	return bp, unitStrip, minStrip, np.max(size_strip), sCresc, sDecresc
 >>>>>>> 431b648eab3c42e3bb0519aaab46e46e455f40c0
