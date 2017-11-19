@@ -17,7 +17,7 @@ for i in bar(range(len(fileNames))):
 features = getInputs(perms)
 
 # salva as features
-np.savetxt('/home/serza/features.txt', features, fmt='%d')
+np.savetxt('/Users/almeida/Downloads/data/featuresNa.txt', features, fmt='%d')
 
 # salva as distancias exatas
-np.savetxt('dist.txt', dist, fmt='%d')
+#np.savetxt('dist.txt', dist, fmt='%d')

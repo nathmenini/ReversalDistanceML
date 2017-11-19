@@ -11,6 +11,8 @@ def getInputs(p):
 	
 	# vetor para identificar o tamanho de cada permutacao
 	labels = np.zeros((1,1))
+	
+	# identifica o tamanho da permutacao
 	#lengths = range(5,11)
 	lengths = [11, 20, 30, 40, 50, 60, 70, 80, 90, 100]	
 
@@ -25,11 +27,7 @@ def getInputs(p):
 
 	cycles_total_odd = countCycles(p)
 
-
-	features = np.hstack((features, cycles_total_odd, labels)) # junta as colunas
+	# junta as colunas
+	features = np.hstack((features, cycles_total_odd, labels))
 
 	return features
-
-#
-#_, s_perms = makePermutations()
-#getInputs(s_perms[0])
