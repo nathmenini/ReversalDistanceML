@@ -103,7 +103,7 @@ model %>% compile(
 
 history <- model %>% fit(
 	as.matrix(dTrain[,1:13]), dTrain$dist, 
-	epochs = 10, batch_size = 128,
+	epochs = 4, batch_size = 128,
 	validation_data = list(as.matrix(dVal[,1:13]), dVal$dist)
 )
 
