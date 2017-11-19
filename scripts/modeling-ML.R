@@ -16,7 +16,7 @@ data_path <- "/Users/almeida/Downloads/data/"
 data <- read.table(paste0(data_path, "featuresFixed.txt"))
 
 # leitura das distancias exatas
-data$dist <- read.table(paste0(data_path, "dist.txt"))[,1]
+data$dist <- read.table(paste0(data_path, "distReversal.txt"))[,1]
 
 # Greedy Reversal Sort
 data$greedy <- read.table(paste0(data_path, "greedyReversalSort.txt"))[,1]
@@ -88,10 +88,10 @@ p <- dim(head(dTrain[1:13]))[2]
 model <- keras_model_sequential() 
 model %>% 
 	layer_dense(units = 500, activation = 'relu', input_shape = c(p)) %>% 
-	layer_dropout(rate = 0.2) %>% 
-	layer_dense(units = 300, activation = 'relu') %>%
-	layer_dropout(rate = 0.2) %>%
-	layer_dense(units = 100, activation = 'relu') %>%
+	layer_dropout(rate = 0.4) %>% 
+	layer_dense(units = 250, activation = 'relu') %>%
+	layer_dropout(rate = 0.3) %>%
+	layer_dense(units = 150, activation = 'relu') %>%
 	layer_dropout(rate = 0.2) %>%
 	layer_dense(units = 1, activation = 'relu')
 
@@ -103,7 +103,7 @@ model %>% compile(
 
 history <- model %>% fit(
 	as.matrix(dTrain[,1:13]), dTrain$dist, 
-	epochs = 4, batch_size = 128,
+	epochs = 10, batch_size = 128,
 	validation_data = list(as.matrix(dVal[,1:13]), dVal$dist)
 )
 
@@ -211,7 +211,8 @@ ggplot(plot, aes(xValue, yValue, colour = Abordagem)) +
 	guides(linetype=FALSE) +
 	theme_light() +
 	labs(x="", y="Média da distância") + 
-	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9900","#54ccfb","#24633e","#ff3300"))
+	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9900","#54ccfb","#24633e","#ff3300")) +
+	ggtitle("Distância de Reversão")
 
 ggplot(dif, aes(xValue, dist, colour = Abordagem)) +
 	geom_line(lwd = .7) +
@@ -219,6 +220,7 @@ ggplot(dif, aes(xValue, dist, colour = Abordagem)) +
 	theme_light() +
 	labs(x="", y="Diferença absoluta") + 
 	scale_color_manual(values=c("#6a5acd","#ff9900","#24633e","#ff3300"))+
-	scale_y_continuous(breaks=seq(0,2.5,0.5))
+	scale_y_continuous(breaks=seq(0,2.5,0.5)) +
+	ggtitle("Distância de Reversão")
 
 
