@@ -11,13 +11,13 @@ dist = []
 bar = progressbar.ProgressBar()
 for i in bar(range(len(fileNames))):
 	p = np.loadtxt(fileNames[i], delimiter = " ")
-	perms.append(p[:,:-1])
+	#perms.append(p[:,:-1])
 	dist = np.hstack((dist, p[:,p.shape[1]-1]))
 
-features = getInputs(perms)
+#features = getInputs(perms)
 
 # salva as features
-np.savetxt('/Users/almeida/Downloads/data/featuresNa.txt', features, fmt='%d')
+np.savetxt('/Users/almeida/Downloads/data/DISTANCIA.txt', dist, fmt='%d')
 
 # salva as distancias exatas
 #np.savetxt('dist.txt', dist, fmt='%d')
