@@ -1,6 +1,6 @@
 # Final project - MO640
 
-The principal goal with this project is estimate the reversal distance of the unsigned permutations based on machine learning techniques, such as linear regression and deep neural networks.
+The principal goal with this project is to estimate the reversal distance of the unsigned permutations based on machine learning techniques, such as linear regression and deep neural networks.
 
 ## Students
 Jorge Luiz Machado da Silva  
