@@ -71,8 +71,14 @@ def featureBpStrip(p):
 	# quantidade de strips unitarias
 	unitStrip = (np.asarray(size_strip) == 1).sum()
 
+	# verifica se os elementos da extensao ja estao em uma strip
+	if(p[1] - p[0] != 1):
+		sCresc = sCresc + 1
+	if(p[len(p)-1] - p[len(p)-2] != 1):
+		sCresc = sCresc + 1
+
 	# soma 2 na sCresc por causa das strip unitarias da ponta da permutacao extendida
-	return bp, unitStrip, minStrip, np.max(size_strip), sCresc + 2, sDecresc
+	return bp, unitStrip, minStrip, np.max(size_strip), sCresc, sDecresc
 
 # bp: nro de breakpoints
 # unitStrip: nro de strips unitarias
