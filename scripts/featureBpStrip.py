@@ -84,13 +84,56 @@ def featureBpStrip(p):
 # unitStrip: nro de strips unitarias
 # minStrip: tamanho da menor strip que nao eh uma strip unitaria (se existir alguma nao unitaria)
 # np.max(size_strip): tamanho da maior strip
-# sCresc + 2: quantidade de strips crescentes
+# sCresc: quantidade de strips crescentes
 # sDecresc: quantidade de strips decrescentes
 
 # exemplos para teste
+
 #print featureBpStrip([5,3,1,2,4])
+# bp: 5
+# unitStrip: 5
+# minStrip: 2
+# np.max(size_strip): 2
+# sCresc: 3
+# sDecresc: 3
+
 #print featureBpStrip([5,4,3,1,2])
+# bp: 3
+# unitStrip: 2
+# minStrip: 2
+# np.max(size_strip): 3
+# sCresc: 3
+# sDecresc: 1
+
 #print featureBpStrip([2,5,1,3,4])
+# bp: 5
+# unitStrip: 5
+# minStrip: 2
+# np.max(size_strip): 2
+# sCresc: 3
+# sDecresc: 3
+
 #print featureBpStrip([1,2,3,5,6,4])
+# bp: 3
+# unitStrip: 2
+# minStrip: 2
+# np.max(size_strip): 4
+# sCresc: 3
+# sDecresc: 1
+
 #print featureBpStrip([2,3,1,5,6,4])
+# bp: 5
+# unitStrip: 4
+# minStrip: 2
+# np.max(size_strip): 2
+# sCresc: 4
+# sDecresc: 2
+
 #print featureBpStrip([1,2,3,4,5,7,6,8,9,11,13,10,12])
+# bp: 7
+# unitStrip: 5
+# minStrip: 2
+# np.max(size_strip): 6
+# sCresc: 3
+# sDecresc: 5
+
