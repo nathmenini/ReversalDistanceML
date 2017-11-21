@@ -75,7 +75,7 @@ dVal <- train[-indexTrain,]
 # -------------------------------------
 fit <- lm(dist ~ ., data = dTrain[,1:14])
 pred <- predict(fit, dVal[,-14])
-dVal$ pred <- pred
+dVal$pred <- pred
 
 boxplot(pred~dVal$dist, xlab = "true distance", ylab = "predicted distance")
 table(dVal$dist, pred %>% round(0))
@@ -223,4 +223,95 @@ ggplot(dif, aes(xValue, dist, colour = Abordagem)) +
 	scale_y_continuous(breaks=seq(0,2.5,0.5)) +
 	ggtitle("Distância de Reversão")
 
+# -----------
+# Analisando Big Perms
+
+# Leitura das features
+dataBigPerms <- read.table(paste0(data_path, "featuresFixedBig.txt"))
+
+# Greedy Reversal Sort
+dataBigPerms$greedy <- read.table(paste0(data_path, "greedyBigPerms.txt"))[,1]
+
+# simple Reversal Sort
+dataBigPerms$simple <- read.table(paste0(data_path, "simpleSortBigPerms.txt"))[,1]
+
+
+names(dataBigPerms) <- c("qtdBp",
+				 "qtdStripUnit",
+				 "menorStrip",
+				 "maiorStrip",
+				 "crescStrip",
+				 "decrescStrip",
+				 "totalCiclos",
+				 "qtdCiclosImp",
+				 "qtdCiclosPar",
+				 "maiorCiclo",
+				 "menorCiclo",
+				 "orientadoCiclo",
+				 "tamanhoPerm",
+				 "dGreedy",
+				 "dSimple")
+
+predBig <- predict(fit, dataBigPerms[,1:13])
+dataBigPerms$predBig <- predBig
+
+# nro breaks vs media da distancia
+meanDistBp <- aggregate(dataBigPerms$predBig, list(dataBigPerms$qtdBp), mean)
+meanGreedy <- aggregate(dataBigPerms$dGreedy, list(dataBigPerms$qtdBp), mean)
+meanSimple <- aggregate(dataBigPerms$dSimple, list(dataBigPerms$qtdBp), mean)
+
+plotBig1 <- data.frame(Abordagem = c(rep("RL", meanDistBp$Group.1 %>% length()),
+								  rep("Greedy Sort", meanDistBp$Group.1 %>% length()),
+								  rep("Simple Sort", meanDistBp$Group.1 %>% length()),
+								  rep("Lim. Inf.", meanDistBp$Group.1 %>% length()),
+								  rep("Lim. Sup.", meanDistBp$Group.1 %>% length())),
+					yValue = c(meanDistBp[,2],
+							   meanGreedy[,2],
+							   meanSimple[,2],
+							   meanDistBp[,1]/2,
+							   meanDistBp[,1]),
+					xValue = rep(meanDistBp$Group.1, 5),
+					line = c(rep("1", meanDistBp$Group.1 %>% length()),
+							 rep("1", meanDistBp$Group.1 %>% length()),
+							 rep("1", meanDistBp$Group.1 %>% length()),
+							 rep("2", meanDistBp$Group.1 %>% length()),
+							 rep("2", meanDistBp$Group.1 %>% length())),
+					flag = rep("# Breakpoint", (meanDistBp$Group.1 %>% length())*5)
+)
+
+# Tamanho de p vs media da distancia
+meanDistTam <- aggregate(dataBigPerms$predBig, list(dataBigPerms$tamanhoPerm), mean)
+meanGreedy <- aggregate(dataBigPerms$dGreedy, list(dataBigPerms$tamanhoPerm), mean)
+meanSimple <- aggregate(dataBigPerms$dSimple, list(dataBigPerms$tamanhoPerm), mean)
+lim <- aggregate(dataBigPerms$qtdBp, list(dataBigPerms$tamanhoPerm), mean)
+
+plotBig2 <- data.frame(Abordagem = c(rep("RL", meanDistTam$Group.1 %>% length()),
+								  rep("Greedy Sort", meanDistTam$Group.1 %>% length()),
+								  rep("Simple Sort", meanDistTam$Group.1 %>% length()),
+								  rep("Lim. Inf.", meanDistTam$Group.1 %>% length()),
+								  rep("Lim. Sup.", meanDistTam$Group.1 %>% length())),
+					yValue = c(meanDistTam[,2],
+							   meanGreedy[,2],
+							   meanSimple[,2],
+							   lim[,2]/2,
+							   lim[,2]),
+					xValue = rep(meanDistTam$Group.1, 5),
+					line = c(rep("1", meanDistTam$Group.1 %>% length()),
+							 rep("1", meanDistTam$Group.1 %>% length()),
+							 rep("1", meanDistTam$Group.1 %>% length()),
+							 rep("2", meanDistTam$Group.1 %>% length()),
+							 rep("2", meanDistTam$Group.1 %>% length())),
+					flag = rep("Tamanho da permutação", (meanDistTam$Group.1 %>% length())*5)
+)
+
+plot2 <- rbind(plotBig1, plotBig2)
+
+ggplot(plot2, aes(xValue, yValue, colour = Abordagem)) +
+	geom_line(aes(linetype=line), lwd = .7) +
+	facet_grid(.~flag, scales = "free") +
+	guides(linetype=FALSE) +
+	theme_light() +
+	labs(x="", y="Média da distância") + 
+	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9900","#54ccfb","#24633e","#ff3300")) +
+	ggtitle("Distância de Reversão")
 
