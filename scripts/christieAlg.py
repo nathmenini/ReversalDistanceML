@@ -12,7 +12,7 @@ def cycleGraph(G, j):
 			G.add_edge(j[b], j[b+1])
 			nx.set_edge_attributes(G, {(j[b], j[b+1]): {'color': 'black'}})
 			black_edges = black_edges + 1;
-		else:
+		elif(abs(j[b]-j[b+1]) == 1):
 			G.add_edge(j[b], j[b+1])
 			nx.set_edge_attributes(G, {(j[b], j[b+1]): {'color': 'none'}})
 
@@ -20,10 +20,11 @@ def cycleGraph(G, j):
 		if(G.has_edge(g, g+1) == False):
 			G.add_edge(g, g+1)
 			nx.set_edge_attributes(G, {(g, g+1): {'color': 'gray'}})
-		elif((G.has_edge(g, g+1) == True) and (G[g][g+1]['color'] == 'none')):
-			G.remove_edge(g,g+1)
+		#elif((G.has_edge(g, g+1) == True) and (G[g][g+1]['color'] == 'none')):
+		#	G.remove_edge(g,g+1)
 
 	#c_list = list(nx.find_cycle(G))
+	print(G.edges(data=True))
 	
 
 	return black_edges
@@ -49,13 +50,15 @@ def christieAlg(permutations):
 				attr = G.get_edge_data(*e) 
 				if(attr['color'] == 'gray'):
 					R.add_node(e[0])
-
+				elif(attr['color'] == 'none'):
+					R.add_node(e[0])
+			
 	
-						#temp = [:] + reversed()
+			#temp = [:] + reversed()
 
 
 
-	#print(R.nodes(data=True))
+	print(R.nodes(data=True))
 	#print(G.edges(5))
 	#print(G.edges(6))
 	#print(G.edges(3))
