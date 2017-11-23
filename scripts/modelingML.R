@@ -89,12 +89,6 @@ table(dVal$dist, pred %>% round(0))
 p <- dim(head(dTrain[1:13]))[2]
 
 model <- keras_model_sequential() 
-# model %>% 
-# 	layer_dense(units = 200, activation = 'relu', input_shape = c(p)) %>% 
-# 	layer_dropout(rate = 0.2) %>% 
-# 	layer_dense(units = 100, activation = 'relu') %>%
-# 	layer_dropout(rate = 0.1) %>%
-# 	layer_dense(units = 1, activation = 'relu')
 
 model %>% 
 	layer_dense(units = 30, activation = 'relu', input_shape = c(p)) %>% 
@@ -120,6 +114,7 @@ dTest$predNN <- model %>% predict_on_batch(as.matrix(dTest[,1:13]))
 
 # -------------------------------------
 # Resultados e Graficos
+# Se quiser ver os resultados para o teste, tem que mudar dVal para dTest
 # -------------------------------------
 # nro breaks vs media da distancia
 #dVal <- dTest
@@ -130,15 +125,15 @@ meanSimple <- aggregate(dVal$dSimple, list(dVal$qtdBp), mean)
 meanReal <- aggregate(dVal$dist, list(dVal$qtdBp), mean)
 
 dif1 <- data.frame(dist = c(abs(meanGreedy[,2]-meanReal[,2]),
-						   abs(meanSimple[,2]-meanReal[,2]),
-						   abs(meanDistBp[,2]-meanReal[,2]),
-						   abs(meanDistBpNN[,2]-meanReal[,2])),
-				  xValue = rep(meanDistBp$Group.1, 4),
-				  Abordagem = c(rep("Greedy Sort", meanDistBp$Group.1 %>% length()),
-				  			  rep("Simple Sort", meanDistBp$Group.1 %>% length()),
-				  			  rep("RL", meanDistBp$Group.1 %>% length()),
-				  			  rep("NN", meanDistBp$Group.1 %>% length())),
-				  flag = rep("# Breakpoint", (meanDistBp$Group.1 %>% length())*4)
+							abs(meanSimple[,2]-meanReal[,2]),
+							abs(meanDistBp[,2]-meanReal[,2]),
+							abs(meanDistBpNN[,2]-meanReal[,2])),
+				   xValue = rep(meanDistBp$Group.1, 4),
+				   Abordagem = c(rep("Greedy Sort", meanDistBp$Group.1 %>% length()),
+				   			  rep("Simple Sort", meanDistBp$Group.1 %>% length()),
+				   			  rep("RL", meanDistBp$Group.1 %>% length()),
+				   			  rep("NN", meanDistBp$Group.1 %>% length())),
+				   flag = rep("# Breakpoint", (meanDistBp$Group.1 %>% length())*4)
 )
 
 plot1 <- data.frame(Abordagem = c(rep("RL", meanDistBp$Group.1 %>% length()),
@@ -220,8 +215,9 @@ gg <- ggplot(plot, aes(xValue, yValue, colour = Abordagem)) +
 	guides(linetype=FALSE) +
 	theme_light() +
 	labs(x="", y="Média da distância") + 
-	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9900","#54ccfb","#24633e","#ff3300")) +
-	ggtitle("Distância de Reversão")
+	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9900","#54ccfb","#24633e","#ff3300"),
+					   labels=c("GRS", "Lim. Inf.", "Lim. Sup.", "RN", "Real", "RL", "SSUR")) +
+	scale_y_continuous(breaks=seq(0,10,2))
 gg
 ggsave("bp.pdf", plot = gg,
 	   scale = 1, width = NA, height = NA)
@@ -231,9 +227,9 @@ gg <- ggplot(dif, aes(xValue, dist, colour = Abordagem)) +
 	facet_grid(.~flag, scales = "free") +
 	theme_light() +
 	labs(x="", y="Diferença absoluta") + 
-	scale_color_manual(values=c("#6a5acd","#ff9900","#24633e","#ff3300"))+
-	scale_y_continuous(breaks=seq(0,2.5,0.25)) +
-	ggtitle("Distância de Reversão")
+	scale_color_manual(values=c("#6a5acd","#ff9900","#24633e","#ff3300"),
+					   labels=c("GRS", "RN", "RL", "SSUR"))+
+	scale_y_continuous(breaks=seq(0,2.5,0.25))
 gg
 ggsave("dist.pdf", plot = gg,
 	   scale = 1, width = NA, height = NA)
@@ -243,6 +239,17 @@ RMSE_val_NN <- (((dVal$predNN - dVal$dist)^2 %>% sum)/(dVal$pred %>% length)) %>
 
 RMSE_Test <- (((dTest$pred - dTest$dist)^2 %>% sum)/(dTest$pred %>% length)) %>% sqrt
 RMSE_Test_NN <- (((dTest$predNN - dTest$dist)^2 %>% sum)/(dTest$pred %>% length)) %>% sqrt
+
+# Proporcao de elementos fora da banda
+propInf <- data.frame(RL   = ((dVal$pred < dVal$qtdBp/2) %>% sum)/dim(dVal)[1],
+					  RN   = ((dVal$predNN < dVal$qtdBp/2) %>% sum)/dim(dVal)[1],
+					  GRS  = ((dVal$dGreedy < dVal$qtdBp/2) %>% sum)/dim(dVal)[1],
+					  SSUR =  ((dVal$dSimple < dVal$qtdBp/2) %>% sum)/dim(dVal)[1])
+propSup <- data.frame(RL   = ((dVal$pred > dVal$qtdBp) %>% sum)/dim(dVal)[1],
+					  RN   = ((dVal$predNN > dVal$qtdBp) %>% sum)/dim(dVal)[1],
+					  GRS  = ((dVal$dGreedy > dVal$qtdBp) %>% sum)/dim(dVal)[1],
+					  SSUR =  ((dVal$dSimple > dVal$qtdBp) %>% sum)/dim(dVal)[1])
+
 
 # -----------
 # Analisando Big Perms
@@ -258,20 +265,20 @@ dataBigPerms$simple <- read.table(paste0(data_path, "simpleSortBigPerms.txt"))[,
 
 
 names(dataBigPerms) <- c("qtdBp",
-				 "qtdStripUnit",
-				 "menorStrip",
-				 "maiorStrip",
-				 "crescStrip",
-				 "decrescStrip",
-				 "totalCiclos",
-				 "qtdCiclosImp",
-				 "qtdCiclosPar",
-				 "maiorCiclo",
-				 "menorCiclo",
-				 "orientadoCiclo",
-				 "tamanhoPerm",
-				 "dGreedy",
-				 "dSimple")
+						 "qtdStripUnit",
+						 "menorStrip",
+						 "maiorStrip",
+						 "crescStrip",
+						 "decrescStrip",
+						 "totalCiclos",
+						 "qtdCiclosImp",
+						 "qtdCiclosPar",
+						 "maiorCiclo",
+						 "menorCiclo",
+						 "orientadoCiclo",
+						 "tamanhoPerm",
+						 "dGreedy",
+						 "dSimple")
 
 predBig <- predict(fit, dataBigPerms[,1:13])
 dataBigPerms$predBig <- predBig
@@ -284,25 +291,25 @@ meanGreedy <- aggregate(dataBigPerms$dGreedy, list(dataBigPerms$qtdBp), mean)
 meanSimple <- aggregate(dataBigPerms$dSimple, list(dataBigPerms$qtdBp), mean)
 
 plotBig1 <- data.frame(Abordagem = c(rep("RL", meanDistBp$Group.1 %>% length()),
-								  rep("NN", meanDistBp$Group.1 %>% length()),
-								  rep("Greedy Sort", meanDistBp$Group.1 %>% length()),
-								  rep("Simple Sort", meanDistBp$Group.1 %>% length()),
-								  rep("Lim. Inf.", meanDistBp$Group.1 %>% length()),
-								  rep("Lim. Sup.", meanDistBp$Group.1 %>% length())),
-					yValue = c(meanDistBp[,2],
-							   meanDistBpNN[,2],
-							   meanGreedy[,2],
-							   meanSimple[,2],
-							   meanDistBp[,1]/2,
-							   meanDistBp[,1]),
-					xValue = rep(meanDistBp$Group.1, 6),
-					line = c(rep("1", meanDistBp$Group.1 %>% length()),
-							 rep("1", meanDistBp$Group.1 %>% length()),
-							 rep("1", meanDistBp$Group.1 %>% length()),
-							 rep("1", meanDistBp$Group.1 %>% length()),
-							 rep("2", meanDistBp$Group.1 %>% length()),
-							 rep("2", meanDistBp$Group.1 %>% length())),
-					flag = rep("# Breakpoint", (meanDistBp$Group.1 %>% length())*6)
+									 rep("NN", meanDistBp$Group.1 %>% length()),
+									 rep("Greedy Sort", meanDistBp$Group.1 %>% length()),
+									 rep("Simple Sort", meanDistBp$Group.1 %>% length()),
+									 rep("Lim. Inf.", meanDistBp$Group.1 %>% length()),
+									 rep("Lim. Sup.", meanDistBp$Group.1 %>% length())),
+					   yValue = c(meanDistBp[,2],
+					   		   meanDistBpNN[,2],
+					   		   meanGreedy[,2],
+					   		   meanSimple[,2],
+					   		   meanDistBp[,1]/2,
+					   		   meanDistBp[,1]),
+					   xValue = rep(meanDistBp$Group.1, 6),
+					   line = c(rep("1", meanDistBp$Group.1 %>% length()),
+					   		 rep("1", meanDistBp$Group.1 %>% length()),
+					   		 rep("1", meanDistBp$Group.1 %>% length()),
+					   		 rep("1", meanDistBp$Group.1 %>% length()),
+					   		 rep("2", meanDistBp$Group.1 %>% length()),
+					   		 rep("2", meanDistBp$Group.1 %>% length())),
+					   flag = rep("# Breakpoint", (meanDistBp$Group.1 %>% length())*6)
 )
 
 # Tamanho de p vs media da distancia
@@ -313,35 +320,46 @@ meanSimple <- aggregate(dataBigPerms$dSimple, list(dataBigPerms$tamanhoPerm), me
 lim <- aggregate(dataBigPerms$qtdBp, list(dataBigPerms$tamanhoPerm), mean)
 
 plotBig2 <- data.frame(Abordagem = c(rep("RL", meanDistTam$Group.1 %>% length()),
-								  rep("NN", meanDistTam$Group.1 %>% length()),
-								  rep("Greedy Sort", meanDistTam$Group.1 %>% length()),
-								  rep("Simple Sort", meanDistTam$Group.1 %>% length()),
-								  rep("Lim. Inf.", meanDistTam$Group.1 %>% length()),
-								  rep("Lim. Sup.", meanDistTam$Group.1 %>% length())),
-					yValue = c(meanDistTam[,2],
-							   meanDistTamNN[,2],
-							   meanGreedy[,2],
-							   meanSimple[,2],
-							   lim[,2]/2,
-							   lim[,2]),
-					xValue = rep(meanDistTam$Group.1, 6),
-					line = c(rep("1", meanDistTam$Group.1 %>% length()),
-							 rep("1", meanDistTam$Group.1 %>% length()),
-							 rep("1", meanDistTam$Group.1 %>% length()),
-							 rep("1", meanDistTam$Group.1 %>% length()),
-							 rep("2", meanDistTam$Group.1 %>% length()),
-							 rep("2", meanDistTam$Group.1 %>% length())),
-					flag = rep("Tamanho da permutação", (meanDistTam$Group.1 %>% length())*6)
+									 rep("NN", meanDistTam$Group.1 %>% length()),
+									 rep("Greedy Sort", meanDistTam$Group.1 %>% length()),
+									 rep("Simple Sort", meanDistTam$Group.1 %>% length()),
+									 rep("Lim. Inf.", meanDistTam$Group.1 %>% length()),
+									 rep("Lim. Sup.", meanDistTam$Group.1 %>% length())),
+					   yValue = c(meanDistTam[,2],
+					   		   meanDistTamNN[,2],
+					   		   meanGreedy[,2],
+					   		   meanSimple[,2],
+					   		   lim[,2]/2,
+					   		   lim[,2]),
+					   xValue = rep(meanDistTam$Group.1, 6),
+					   line = c(rep("1", meanDistTam$Group.1 %>% length()),
+					   		 rep("1", meanDistTam$Group.1 %>% length()),
+					   		 rep("1", meanDistTam$Group.1 %>% length()),
+					   		 rep("1", meanDistTam$Group.1 %>% length()),
+					   		 rep("2", meanDistTam$Group.1 %>% length()),
+					   		 rep("2", meanDistTam$Group.1 %>% length())),
+					   flag = rep("Tamanho da permutação", (meanDistTam$Group.1 %>% length())*6)
 )
 
 plot2 <- rbind(plotBig1, plotBig2)
 
-ggplot(plot2, aes(xValue, yValue, colour = Abordagem)) +
+gg <- ggplot(plot2, aes(xValue, yValue, colour = Abordagem)) +
 	geom_line(aes(linetype=line), lwd = .7) +
 	facet_grid(.~flag, scales = "free") +
 	guides(linetype=FALSE) +
 	theme_light() +
 	labs(x="", y="Média da distância") + 
-	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9900","#54ccfb","#24633e","#ff3300")) +
-	ggtitle("Distância de Reversão")
+	scale_color_manual(values=c("#6a5acd","#b4b4b4","#b4b4b4","#ff9900","#24633e","#ff3300"),
+					   labels=c("GRS", "Lim. Inf.", "Lim. Sup.", "RN", "RL", "SSUR"))
+gg
+ggsave("big.pdf", plot = gg,
+	   scale = 1, width = NA, height = NA)
 
+propInf <- data.frame(RL   = ((dataBigPerms$predBig < dataBigPerms$qtdBp/2) %>% sum)/dim(dataBigPerms)[1],
+					  RN   = ((dataBigPerms$predBigNN < dataBigPerms$qtdBp/2) %>% sum)/dim(dataBigPerms)[1],
+					  GRS  = ((dataBigPerms$dGreedy < dataBigPerms$qtdBp/2) %>% sum)/dim(dataBigPerms)[1],
+					  SSUR =  ((dataBigPerms$dSimple < dataBigPerms$qtdBp/2) %>% sum)/dim(dataBigPerms)[1])
+propSup <- data.frame(RL   = ((dataBigPerms$predBig > dataBigPerms$qtdBp) %>% sum)/dim(dataBigPerms)[1],
+					  RN   = ((dataBigPerms$predBigNN > dataBigPerms$qtdBp) %>% sum)/dim(dataBigPerms)[1],
+					  GRS  = ((dataBigPerms$dGreedy > dataBigPerms$qtdBp) %>% sum)/dim(dataBigPerms)[1],
+					  SSUR =  ((dataBigPerms$dSimple > dataBigPerms$qtdBp) %>% sum)/dim(dataBigPerms)[1])
