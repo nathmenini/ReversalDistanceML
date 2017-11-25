@@ -2,15 +2,23 @@ import networkx as nx
 import numpy as np
 import progressbar
 
-# test permutatios
-#permutations = [[[3, 1, 4, 5, 2],[5, 2, 1, 4, 3]],[[3, 1, 4, 5, 2, 6],[6, 5, 2, 1, 4, 3]], [[8, 5, 1, 4, 3, 2, 7, 6]]]
-#permutations = [[[3, 1, 4, 5, 2],[5, 2, 1, 4, 3]],[[3, 1, 4, 5, 2, 6],[6, 5, 2, 1, 4, 3]], [[8, 5, 1, 4, 3, 2, 7, 6],[1, 2, 3, 4, 5, 6, 7, 8]]]
+# countCycles
+# This function creates an alternate graph por a permutation without genes orientation.
+# Returns a list were each element contains features for each permutation in the following form:
+#
+# [[total, odd_cycles, unit_cycles, largest_cycle, smallest_cycle, oriented_cycles], ..., ...]
+#
+# Features: Total cycles, Number of unitary cycles, Size of the largest cycle, Size of the smallest cycle,
+# and Number of oriented cycles.
+#
+# Implemented by SERZA (Sergio Zumpano Arnosti)
+
+# test: 
+# permutations = [[[3, 1, 4, 5, 2],[5, 2, 1, 4, 3]],[[3, 1, 4, 5, 2, 6],[6, 5, 2, 1, 4, 3]], [[8, 5, 1, 4, 3, 2, 7, 6],[1, 2, 3, 4, 5, 6, 7, 8]]]
 
 
 def countCycles(permutations):
 
-	#cycles - for each permutation calculates total number of cycles and odd cycles 
-	#cycles = [[total, odd], [total, odd], ...]
 	cycles = []
 	G=nx.DiGraph()
 	bar = progressbar.ProgressBar()
@@ -50,20 +58,18 @@ def countCycles(permutations):
 				black_edges=0
 				highest_id=0
 
-				# verify if the edge among two elements in cycle is black
+				# verify if the edge between two elements in cycle is black
 				for index in range(0, len(c_list[c])-1):
-
 					if(G[c_list[c][index]][c_list[c][index+1]]['color'] == 'black'):
 						black_edges = black_edges + 1
 
-						# verify the highest black edge id
+						# verify the highest black edge id to start the cycle
 						if(int(G[c_list[c][index]][c_list[c][index+1]]['id']) > highest_id):
 							highest_id = int(G[c_list[c][index]][c_list[c][index+1]]['id'])
 							start_node = c_list[c][index]
 
 				if(G[c_list[c][len(c_list[c])-1]][c_list[c][0]]['color'] == 'black'):
 					black_edges = black_edges + 1
-
 					if(int(G[c_list[c][len(c_list[c])-1]][c_list[c][0]]['id']) > highest_id):
 						highest_id = int(G[c_list[c][len(c_list[c])-1]][c_list[c][0]]['id'])
 						start_node = c_list[c][len(c_list[c])-1]
@@ -74,10 +80,11 @@ def countCycles(permutations):
 				edg_colors = nx.get_edge_attributes(G, 'color')
 				previous=edg_ids[edg_list[0]]
 
+				# Find oriented cycles
 				for e in edg_list:
 					if(edg_colors[e] == 'black' and int(edg_ids[e]) < previous):
 						previous = edg_ids[e]
-					elif(edg_colors[e] == 'black' and int(edg_ids[e]) > previous): #Se unitario for orientado entao adicionar or len(edg_list)==2
+					elif(edg_colors[e] == 'black' and int(edg_ids[e]) > previous): 
 						oriented_cycles = oriented_cycles +1;
 						break
 
@@ -100,7 +107,7 @@ def countCycles(permutations):
 				if(black_edges%2 != 0):
 					odd_cycles = odd_cycles + 1
 
-			# if there is only unitary cycles, use the size 1
+			# if there is only unitary cycles, use the size 1 for largest and smallest
 			if(unit_cycles == len(j)+1):
 				largest_cycle=1
 				smallest_cycle=1
