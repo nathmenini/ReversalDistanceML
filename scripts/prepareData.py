@@ -25,8 +25,11 @@ print("\nReading Files...")
 bar = progressbar.ProgressBar()
 for i in bar(range(len(fileNames))):
 	p = np.loadtxt(fileNames[i], delimiter = " ")
-	perms.append(p[:,:-1])
-	dist = np.hstack((dist, p[:,p.shape[1]-1]))
+	if(entrada == 1):
+		perms.append(p[:,:-1])
+		dist = np.hstack((dist, p[:,p.shape[1]-1]))
+	elif(entrada == 2):
+		perms.append(p)
 
 print("\nQual funcao deseja executar ?\n")
 print("1: Pegar features para permutacoes\n")
