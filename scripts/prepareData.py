@@ -11,9 +11,8 @@ while(entrada!=1 and entrada!=2):
 	print("Opcao invalida... :( \n")
 	funcao = int(input("Opcao: "))
 
-# Executar o algoritmo na pasta prepared-data descompactada
 if(entrada == 1):
-	fileNames = ['perm_5.txt', 'perm_6.txt', 'perm_7.txt', 'perm_8.txt']#, 'perm_9.txt', 'perm_10.txt']
+	fileNames = ['perm_5.txt', 'perm_6.txt', 'perm_7.txt', 'perm_8.txt', 'perm_9.txt', 'perm_10.txt']
 elif(entrada == 2):
 	fileNames = ['perm_11.txt', 'perm_20.txt', 'perm_30.txt', 'perm_40.txt', 'perm_50.txt', 'perm_60.txt', 'perm_70.txt', 'perm_80.txt', 'perm_90.txt', 'perm_100.txt']
 
