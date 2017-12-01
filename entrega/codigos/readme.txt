@@ -20,8 +20,8 @@ Para instalar os pacotes necessários, rode os seguintes comandos:
 
 Para rodar o programa:
 
-	Descompactar os arquivos de dados "perm_5.txt até perm_100.txt" dentro da 
-	pasta do programa, então executar:
+	Descompactar os arquivos de dados "perm_5.txt até perm_100.txt"(dataset.zip) 
+	dentro da pasta do programa, então executar:
 	
 		python2 prepareData.py
 
