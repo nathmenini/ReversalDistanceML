@@ -1,13 +1,9 @@
-# Projeto Final - MO640
+# Final Project - MO640
 
-O principal objetivo deste projeto é estimar a distância de reversão de permutações sem orientação de genes, baseando-se em técnicas de _machine learning_ como, por exemplo, Regressão Linear e Redes Neurais.
+The main goal of this project is estimate the reversal distance of permutations without gene orientation using machine learning techniques, such as linear regression and neural networks.
 
-## Estudantes
-Jorge Luiz Machado da Silva  
-Email: jre-jl@hotmail.com
+Please, if you have any question send a message to nathmenini@gmail.com.
 
-Nathália Menini  
-Email: nathmenini@gmail.com
-
-Sergio Zumpano Arnosti  
-Email: serza.arnosti@gmail.com
+## Developers:
+Nathália Menini (nathmenini@gmail.com), Jorge Luiz Machado da Silva (jre-jl@hotmail.com), and Sergio Zumpano Arnosti  
+(serza.arnosti@gmail.com)
