@@ -1,4 +1,4 @@
-# Final Project - MO640
+## Description
 
 The main goal of this project was estimate the reversal distance of permutations without gene orientation using machine learning techniques, such as linear regression and neural networks.
 
